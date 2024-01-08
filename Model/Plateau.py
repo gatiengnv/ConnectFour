@@ -47,4 +47,28 @@ def construirePlateau()->list:
 
     return plateau
 
+def placerPionPlateau(plateau:list, pion:dict, numColonne:int)->int:
+    """
+    Cette fonction permet de placer un pion dans le plateau et de dire dans quelle ligne le pion se retrouve
+    :param plateau: le plateau sur lequel on joue
+    :param pion: le pion que l'on place
+    :param numColonne: numéro de colonnes où on place le pion
+    :return: la ligne où se trouve le pion
+    """
+    if not type_plateau(plateau):
+        raise TypeError("placerPionPlateau :Le premier paramètre ne correspond pas à un plateau")
+    if not type_pion(pion):
+        raise TypeError("placerPionPlateau :Le second paramètre n’est pas un pion")
+    if not isinstance(numColonne, int):
+        raise TypeError("placerPionPlateau : Le troisième paramètre n’est pas un entier")
+    if numColonne < 0 or numColonne > const.NB_COLUMNS - 1:
+        raise ValueError(f"placerPionPlateau : La valeur de la colonne {numColonne} n'est pas correcte")
 
+    i = const.NB_LINES - 1
+    lignePlacement = -1
+    while lignePlacement == -1 and i != -1:
+        if plateau[i][numColonne] == None:
+            plateau[i][numColonne] = pion
+            lignePlacement = i
+        i -= 1
+    return lignePlacement
