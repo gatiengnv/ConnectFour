@@ -57,7 +57,9 @@ def setCouleurPion(pion:dict, nouvelleCouleur:int)->None:
     if not type_pion(pion):
         raise TypeError("setCouleurPion :Le premier paramètre n’est pas un pion")
     if not isinstance(nouvelleCouleur, int):
-        raise ValueError("« setCouleurPion : Le second paramètre n’est pas un entier")
+        raise TypeError("setCouleurPion : Le second paramètre n’est pas un entier")
+    if not nouvelleCouleur in const.COULEURS:
+        raise ValueError(f"setCouleurPion : Le second paramètre ({nouvelleCouleur} n’est pas une couleur")
     pion[const.COULEUR] = nouvelleCouleur
     return None
 
@@ -81,6 +83,6 @@ def setIdPion(pion:dict, nouvelleIdentifiant:int)->None:
     if not type_pion(pion):
         raise TypeError("setIdPion : Le premier paramètre n’est pas un pion")
     if not isinstance(nouvelleIdentifiant, int):
-        raise ValueError("setIdPion : Le second paramètre n’est pas un entier.")
+        raise TypeError("setIdPion : Le second paramètre n’est pas un entier.")
     pion[const.ID] = nouvelleIdentifiant
     return None
