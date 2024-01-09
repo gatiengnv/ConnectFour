@@ -97,3 +97,37 @@ def toStringPlateau(plateau:list)->str:
 
     return bestPlateau
 
+def detecter4horizontalPlateau(plateau:list, couleur:int)->list:
+    """
+    Cette fonction donne les séries de 4 pions alignés sur une même ligne d'une même couleur
+    :param plateau: le plateau où on fait la détection
+    :param couleur: la couleur dont on recherche une série
+    :return: la liste des pions formant une suite de 4 d'une certaine couleur sur une même ligne
+    """
+    if not type_plateau(plateau):
+        raise TypeError("detecter4horizontalPlateau : Le premier paramètre ne correspond pas à un plateau")
+    if not isinstance(couleur, int):
+        raise TypeError("detecter4horizontalPlateau : le second paramètre n’est pas un entier")
+    if not couleur in const.COULEURS:
+        raise ValueError(f"détecter4horizontalPlateau : La valeur de la couleur {couleur} n’est pas correcte")
+
+    listePionSuite = []
+    decalage = 0
+    suiteDePion = 0
+    tempList = []
+    for i in range(const.NB_LINES):
+        decalage = 0
+        suiteDePion = 0
+        tempList = []
+        for j in range(decalage, decalage+4):
+            if plateau[i][j] != None:
+                if plateau[i][j][const.COULEUR] == couleur:
+                    suiteDePion += 1
+                    tempList.append(plateau[i][j])
+                    if suiteDePion == 4:
+                        listePionSuite += tempList
+                elif decalage != const.NB_COLUMNS-3:
+                    decalage += 1
+                    suiteDePion = 0
+                    tempList = []
+    return listePionSuite
