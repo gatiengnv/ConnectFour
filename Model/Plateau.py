@@ -111,23 +111,54 @@ def detecter4horizontalPlateau(plateau:list, couleur:int)->list:
     if not couleur in const.COULEURS:
         raise ValueError(f"détecter4horizontalPlateau : La valeur de la couleur {couleur} n’est pas correcte")
 
-    listePionSuite = []
-    decalage = 0
-    suiteDePion = 0
     tempList = []
+    listePion = []
+    suite = 0
     for i in range(const.NB_LINES):
-        decalage = 0
-        suiteDePion = 0
+        suite = 0
         tempList = []
-        for j in range(decalage, decalage+4):
+        for j in range(const.NB_COLUMNS):
             if plateau[i][j] != None:
                 if plateau[i][j][const.COULEUR] == couleur:
-                    suiteDePion += 1
+                    suite += 1
                     tempList.append(plateau[i][j])
-                    if suiteDePion == 4:
-                        listePionSuite += tempList
-                elif decalage != const.NB_COLUMNS-3:
-                    decalage += 1
-                    suiteDePion = 0
-                    tempList = []
-    return listePionSuite
+            if suite == 4:
+                listePion+=tempList
+                suite=0
+            if plateau[i][j] == None or plateau[i][j][const.COULEUR] != couleur:
+                suite = 0
+                tempList = []
+    return listePion
+
+def detecter4verticalPlateau(plateau:list, couleur:int)->list:
+    """
+    Cette fonction donne les séries de 4 pions alignés sur une même colonne d'une même couleur
+    :param plateau: le plateau où on fait la détection
+    :param couleur: la couleur dont on recherche une série
+    :return: la liste des pions formant une suite de 4 d'une certaine couleur sur une même colonne
+    """
+    if not type_plateau(plateau):
+        raise TypeError("detecter4verticalPlateau : Le premier paramètre ne correspond pas à un plateau")
+    if not isinstance(couleur, int):
+        raise TypeError("detecter4verticalPlateau : le second paramètre n’est pas un entier")
+    if not couleur in const.COULEURS:
+        raise ValueError(f"detecter4verticalPlateau : La valeur de la couleur {couleur} n’est pas correcte")
+
+    tempList = []
+    listePion = []
+    suite = 0
+    for i in range(const.NB_COLUMNS):
+        suite = 0
+        tempList = []
+        for j in range(const.NB_LINES):
+            if plateau[j][i] != None:
+                if plateau[j][i][const.COULEUR] == couleur:
+                    suite += 1
+                    tempList.append(plateau[j][i])
+            if suite == 4:
+                listePion += tempList
+                suite = 0
+            if plateau[j][i] == None or plateau[j][i][const.COULEUR] != couleur:
+                suite = 0
+                tempList = []
+    return listePion
