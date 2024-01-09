@@ -72,3 +72,27 @@ def placerPionPlateau(plateau:list, pion:dict, numColonne:int)->int:
             lignePlacement = i
         i -= 1
     return lignePlacement
+
+def toStringPlateau(plateau:list)->str:
+    """
+    Cette fonction affiche le tableau d'une meilleure façon
+    :param plateau: le plateau à afficher
+    :return: le plateau avec un meilleur affichage
+    """
+    bestPlateau = ""
+    for i in range(len(plateau)):
+        for j in range(len(plateau[i])):
+            if plateau[i][j] != None:
+                if plateau[i][j][const.COULEUR] == const.ROUGE:
+                    elmt = "\x1B[41m \x1B[0m"
+                elif plateau[i][j][const.COULEUR] == const.JAUNE:
+                    elmt = "\x1B[43m \x1B[0m"
+            else:
+                elmt = " "
+            bestPlateau += "|" + elmt
+            if j == const.NB_COLUMNS - 1:
+                bestPlateau += "| \n"
+    bestPlateau += "--------------- \n"
+    bestPlateau += " 0 1 2 3 4 5 6"
+
+    return bestPlateau
