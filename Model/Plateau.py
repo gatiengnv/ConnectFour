@@ -330,6 +330,30 @@ def getPionsGagnantsPlateau(plateau:list)->list:
         listeFinale += detecter4diagonaleIndirectePlateau(plateau, i)
     return listeFinale
 
+def isRempliPlateau(plateau:list)->bool:
+    """
+    Cette fonction vérifie si le plateau est rempli ou non
+    :param plateau: le platon où on fait la vérification
+    :return: si le tableau est rempli
+    """
+
+    if not type_plateau(plateau):
+        raise TypeError("isRempliPlateau : Le paramètre n’est pas un plateau")
+
+    taillePlateau = const.NB_LINES * const.NB_COLUMNS
+    nbPions = 0
+    i=0
+    pionManquant = False
+    while i<len(plateau) and not pionManquant:
+        for pion in plateau[i]:
+            if pion != None:
+                nbPions+=1
+            else:
+                pionManquant = True
+        i+=1
+    return nbPions == taillePlateau
+
+
 
 
 
