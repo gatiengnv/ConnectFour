@@ -82,6 +82,17 @@ def getPlacerPionJoueur(joueur:dict)->Callable:
 
     return joueur[const.PLACER_PION]
 
+def getPionJoueur(joueur:dict)->dict:
+    """
+    Cette fonction construit un pion de la couleur du joueur
+    :param joueur: le joueur dont on récupère la couleur pour construire un pion
+    :return: le pion ayant la couleur du joueur
+    """
+    if not type_joueur(joueur):
+        raise TypeError("getPionJoueur: le paramètre ne correspond pas à un joueur ")
+
+    return construirePion(getCouleurJoueur(joueur))
+
 
 
 
