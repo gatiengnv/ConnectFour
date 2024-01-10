@@ -227,7 +227,91 @@ def detecter4diagonaleDirectePlateau(plateau: list, couleur: int) -> list:
             tempList = []
     return listePion
 
+def detecter4diagonaleIndirectePlateau(plateau: list, couleur: int) -> list:
+    """
+    Cette fonction donne les séries de 4 pions alignés sur une même diagonale (inverse) d'une même couleur
+    :param plateau: le plateau où on fait la détection
+    :param couleur: la couleur dont on recherche une série
+    :return: la liste des pions formant une suite de 4 d'une certaine couleur sur une même diagonale (inverse)
+    """
+    if not type_plateau(plateau):
+        raise TypeError("detecter4diagonaleIndirectePlateau : Le premier paramètre ne correspond pas à un plateau")
+    if not isinstance(couleur, int):
+        raise TypeError("detecter4diagonaleIndirectePlateau : le second paramètre n’est pas un entier")
+    if not couleur in const.COULEURS:
+        raise ValueError(f"detecter4diagonaleIndirectePlateau : La valeur de la couleur {couleur} n’est pas correcte")
 
+    x = const.NB_LINES
+    decalage = 0
+    listePion=[]
+    tempListe = []
+    suite = 0
+
+    #partie diagonale nord ouest
+    while x>3:
+        for i in range(x-1, -1, -1):
+            if plateau[i][decalage] != None:
+                if plateau[i][decalage][const.COULEUR] == couleur:
+                    tempListe.append(plateau[i][decalage])
+                    suite += 1
+                else:
+                    suite=0
+                    tempListe = []
+            #si la suite fait 4 pions, les ajoutés dans la liste finale
+            if suite == 4:
+                listePion += tempListe
+                suite = 0
+            if plateau[i][decalage] == None or plateau[i][decalage][const.COULEUR] != couleur:
+                suite = 0
+                tempListe = []
+
+            #passer au pion suivant de la diagonale
+            decalage+=1
+
+        #changement de diagonale
+        print()
+        x -= 1
+        decalage=0
+        suite = 0
+        tempListe = []
+
+    #réinitialisation des paramètres
+    x = const.NB_LINES
+    decalage = 1
+    tempListe = []
+    suite = 0
+    z=0
+
+    # partie diagonale sud est
+    while x > 3:
+        for i in range(x - 1, -1, -1):
+            if plateau[i+z][decalage] != None:
+                if plateau[i+z][decalage][const.COULEUR] == couleur:
+                    tempListe.append(plateau[i+z][decalage])
+                    suite += 1
+                else:
+                    suite = 0
+                    tempListe = []
+            # si la suite fait 4 pions, les ajoutés dans la liste finale
+            if suite == 4:
+                listePion += tempListe
+                suite = 0
+            if plateau[i+z][decalage] == None or plateau[i+z][decalage][const.COULEUR] != couleur:
+                suite = 0
+                tempListe = []
+
+            # passer au pion suivant de la diagonale
+            decalage += 1
+
+        # changement de diagonale
+        print()
+        x -= 1
+        z+=1
+        decalage = 1+z
+        suite = 0
+        tempListe = []
+
+    return listePion
 
 
 
