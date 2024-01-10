@@ -1,6 +1,7 @@
 from Model.Constantes import *
 from Model.Pion import *
 from Model.Plateau import *
+from typing import Callable
 
 
 
@@ -33,5 +34,23 @@ def type_joueur(joueur: dict) -> bool:
         not type_plateau(joueur[const.PLATEAU])):
         return False
     return True
+
+
+def construireJoueur(couleur: int)->dict:
+    """
+    Cette fonction construit le joeur
+    :param couleur: la couleur du joueur
+    :return: la représentation du joueur
+    """
+
+    if not isinstance(couleur, int):
+        raise TypeError("construireJoueur : Le paramètre n’est pas un entier")
+    if not couleur in const.COULEURS:
+        raise ValueError(f"construireJoueur : L’entier donné {couleur} n’est pas une couleur. »")
+    return {const.COULEUR: couleur, const.PLATEAU: None, const.PLACER_PION: None}
+
+
+
+
 
 
