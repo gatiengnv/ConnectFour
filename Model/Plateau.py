@@ -172,6 +172,13 @@ def detecter4diagonaleDirectePlateau(plateau: list, couleur: int) -> list:
     :param couleur: la couleur dont on recherche une série
     :return: la liste des pions formant une suite de 4 d'une certaine couleur sur une même diagonale
     """
+    if not type_plateau(plateau):
+        raise TypeError("detecter4diagonaleDirectePlateau : Le premier paramètre ne correspond pas à un plateau")
+    if not isinstance(couleur, int):
+        raise TypeError("detecter4diagonaleDirectePlateau : le second paramètre n’est pas un entier")
+    if not couleur in const.COULEURS:
+        raise ValueError(f"detecter4diagonaleDirectePlateau : La valeur de la couleur {couleur} n’est pas correcte")
+
     decalage = 0
     suite = 0
     tempList = []
@@ -219,7 +226,6 @@ def detecter4diagonaleDirectePlateau(plateau: list, couleur: int) -> list:
             suite = 0
             tempList = []
     return listePion
-
 
 
 
