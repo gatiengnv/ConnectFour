@@ -93,6 +93,39 @@ def getPionJoueur(joueur:dict)->dict:
 
     return construirePion(getCouleurJoueur(joueur))
 
+def setPlateauJoueur(joueur:dict, plateau:list)->None:
+    """
+    Cette fonction affecte un plateau au joueur
+    :param joueur: le joueur recevant un tableau
+    :param plateau: le plateau qui est affecté
+    :return: Rien
+    """
+    if not type_joueur(joueur):
+        raise TypeError("setPlateauJoueur: le premier paramètre ne correspond pas à un joueur ")
+    if not type_plateau(plateau):
+        raise TypeError("setPlateauJoueur : Le second paramètre ne correspond pas à un plateau")
+
+    joueur[const.PLATEAU] = plateau
+
+    return None
+
+def setPlacerPionJoueur(joueur:dict, fn:Callable)->None:
+    """
+    Cette fonction affecte une fonction au joueur pour placer un pion
+    :param joueur: le joueur auquel on affecte une fonction
+    :param fn: la fonction à affecté
+    :return: Rien
+    """
+
+    if not type_joueur(joueur):
+        raise TypeError("setPlacerPionJoueur: le premier paramètre ne correspond pas à un joueur ")
+    if not callable(fn):
+        raise TypeError("setPlacerPionJoueur : le second paramètre n’est pas une fonction")
+
+    joueur[const.PLACER_PION] = fn
+
+    return None
+
 
 
 
