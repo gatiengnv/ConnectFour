@@ -19,5 +19,6 @@ p = construirePlateau()
 for i in range(100):
      placerPionPlateau(p, construirePion(choice(const.COULEURS)), randint(0, const.NB_COLUMNS - 1))
 print(toStringPlateau(p))
-print(detecter4horizontalPlateau(p, 1))
-print(detecter4verticalPlateau(p, 1))
+#print(detecter4horizontalPlateau(p, 1))
+#print(detecter4verticalPlateau(p, 1))
+print(detecter4diagonaleDirectePlateau(p, 1))

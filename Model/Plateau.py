@@ -162,3 +162,70 @@ def detecter4verticalPlateau(plateau:list, couleur:int)->list:
                 suite = 0
                 tempList = []
     return listePion
+
+
+
+def detecter4diagonaleDirectePlateau(plateau: list, couleur: int) -> list:
+    """
+    Cette fonction donne les séries de 4 pions alignés sur une même diagonale d'une même couleur
+    :param plateau: le plateau où on fait la détection
+    :param couleur: la couleur dont on recherche une série
+    :return: la liste des pions formant une suite de 4 d'une certaine couleur sur une même diagonale
+    """
+    decalage = 0
+    suite = 0
+    tempList = []
+    listePion = []
+    start = const.NB_COLUMNS-1
+    end = const.NB_LINES-1
+    for i in range(end):
+        for j in range(start):
+            if plateau[i+j][(i+j)-decalage] != None:
+                if plateau[i+j][(i+j)-decalage][const.COULEUR] == couleur:
+                    suite += 1
+                    tempList.append(plateau[i+j][(i+j)-decalage])
+            if suite == 4:
+                listePion += tempList
+                suite = 0
+            if plateau[i+j][(i+j)-decalage] == None or plateau[i+j][(i+j)-decalage][const.COULEUR] != couleur:
+                suite = 0
+                tempList = []
+        suite = 0
+        tempList = []
+        start -= 1
+        end -= 1
+        decalage+=1
+    borne = const.NB_LINES
+    i=0
+    decalage=1
+    suite = 0
+    tempList = []
+    while i<borne and borne > 2:
+        if plateau[i][i+decalage] != None:
+            if plateau[i][i+decalage][const.COULEUR] == couleur:
+                suite += 1
+                tempList.append(plateau[i][i+decalage])
+        if suite == 4:
+            listePion += tempList
+            suite = 0
+        if plateau[i][i+decalage] == None or plateau[i][i+decalage][const.COULEUR] != couleur:
+            suite = 0
+            tempList = []
+        i+=1
+        if i == borne:
+            i=0
+            borne-=1
+            decalage+=1
+            suite = 0
+            tempList = []
+    return listePion
+
+
+
+
+
+
+
+
+
+
