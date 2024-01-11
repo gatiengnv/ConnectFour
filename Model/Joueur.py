@@ -130,7 +130,7 @@ def setPlacerPionJoueur(joueur:dict, fn:Callable)->None:
 def _placerPionJoueur(joueur:dict)->int:
     """
     Cette fonction choisi une colonne aléatoire
-    :param joueur: le joueur qui joue
+    :param joueur: le joueur (IA) qui joue
     :return: la colonne choisi aléatoirement
     """
     if not type_joueur(joueur):
@@ -152,6 +152,21 @@ def _placerPionJoueur(joueur:dict)->int:
     else:
         colonneChoisi = -1
     return colonneChoisi
+
+def initialiserIAJoueur(joueur:dict, joueEnPremier:bool)->None:
+    """
+    Cette fonction definie la fonction pour jouer à l'IA
+    :param joueur: Le joueur (IA)
+    :param joueEnPremier: Est ce que l'IA joue en première ?
+    :return: Rien
+    """
+    if not type_joueur(joueur):
+        raise TypeError("initialiserIAJoueur : Le premier paramètre n’est pas un joueur")
+    if not isinstance(joueEnPremier, bool):
+        raise TypeError("initialiserIAJoueur : Le second paramètre n’est pas un booléen")
+    setPlacerPionJoueur(joueur, _placerPionJoueur)
+
+    return None
 
 
 
