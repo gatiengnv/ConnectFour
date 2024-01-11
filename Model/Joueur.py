@@ -2,6 +2,7 @@ from Model.Constantes import *
 from Model.Pion import *
 from Model.Plateau import *
 from typing import Callable
+from random import randint
 
 
 
@@ -126,7 +127,31 @@ def setPlacerPionJoueur(joueur:dict, fn:Callable)->None:
 
     return None
 
+def _placerPionJoueur(joueur:dict)->int:
+    """
+    Cette fonction choisi une colonne aléatoire
+    :param joueur: le joueur qui joue
+    :return: la colonne choisi aléatoirement
+    """
+    if not type_joueur(joueur):
+        raise TypeError("_placerPionJoueur : Le paramètre n’est pas un joueur")
 
+    if not isRempliPlateau(joueur[const.PLATEAU]):
+        placer = False
+        nbPionsColonne = 0
+        while not placer:
+            colonneChoisi = randint(0, const.NB_COLUMNS - 1)
+            # vérifier si le nombre de pions dans une colonne est bien inférieur ou égal au nombre de ligne
+            for i in range(const.NB_LINES):
+                if joueur[const.PLATEAU][i][colonneChoisi] != None:
+                    print(joueur[const.PLATEAU][i][colonneChoisi])
+                    nbPionsColonne += 1
+            if nbPionsColonne <= const.NB_LINES - 1:
+                placer = True
+            nbPionsColonne = 0
+    else:
+        colonneChoisi = -1
+    return colonneChoisi
 
 
 
