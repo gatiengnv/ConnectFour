@@ -353,10 +353,92 @@ def isRempliPlateau(plateau:list)->bool:
         i+=1
     return nbPions == taillePlateau
 
+def placerPionLignePlateau(plateau:list, pion:dict, ligne:int, left)->tuple:
+    """
+    Cette fonction place un pion sur une ligne spécifique
+    :param plateau: plateau
+    :param pion: le pion à ajouté
+    :param ligne: la ligne où on ajoute le pion
+    :param left: le pion est-il ajouté par la gauche?
+    :return: liste des pions poussés et numéro de la ligne où se retrouve le dernier pion (si changement de ligne il y a)
+    """
+    if not type_plateau(plateau):
+        raise TypeError("placerPionLignePlateau : Le premier paramètre n’est pas un plateau")
+    if not type_pion(pion):
+        raise TypeError("placerPionLignePlateau : Le second paramètre n’est pas un pion")
+    if not isinstance(ligne, int):
+        raise TypeError("placerPionLignePlateau : le troisième paramètre n’est pas un entier")
+    if not (ligne >= 0 and ligne <= const.NB_LINES - 1):
+        raise ValueError(f"placerPionLignePlateau : Le troisième paramètre {ligne} ne désigne pas une ligne")
+    if not isinstance(left, bool):
+        raise TypeError("placerPionLignePlateau : le quatrième paramètre n’est pas un booléen")
+
+    lignePLateau = plateau[ligne]
+    listePionsPousses =  []
+    ligneDernierPion = None
+    #si le pion est poussé à gauche
+    if left:
+        #si il n'y a pas de vide en dessous
+        if ligne == const.NB_LINES - 1 or plateau[ligne+1][0] != None:
+            coupure = const.NB_COLUMNS - 1
+            # déterminer les pions qui seront affectés, c'est à dire tout les pions juste avant la première case vide
+            i = 0
+            while (coupure == const.NB_COLUMNS - 1 and i < const.NB_COLUMNS):
+                if lignePLateau[i] == None:
+                    coupure = i
+                i += 1
+            # déplacer les pions juste avant la première case vide d'une colonne
+            # pour simuler le déplacement d'un pion, en réalité celui-ci est supprimé et un pion similaire de la même couleur en column+1 est placer
+            for i in range(coupure - 1, -1, -1):
+                lignePLateau[i + 1] = None
+                listePionsPousses.append(lignePLateau[i])
+                placer = placerPionPlateau(plateau, lignePLateau[i], i + 1)
+                # vérifier si le dernier pion n'est pas tombé
+                if placer != ligne:
+                    ligneDernierPion = placer
+
+                # detruire le pion précédent
+                lignePLateau[i] = None
+            # ajouter le pion à la gauche de la ligne que l'on voulait
+            lignePLateau[0] = pion
+            listePionsPousses.reverse()
+            listePionsPousses.insert(0, pion)
+            # si la liste à une taille de 7, le dernier pion est donc sorti du jeu
+            if len(listePionsPousses) == const.NB_COLUMNS:
+                ligneDernierPion = const.NB_LINES
+        else:
+            placerPionPlateau(plateau, pion, 0)
 
 
+    else:
+        #vérifier si il n'y a pas de vide en dessous
+        if ligne == const.NB_LINES - 1 or plateau[ligne+1][const.NB_LINES - 1] != None:
+            # si le pion est poussé à droite
+            coupure = 0
+            # déterminer les pions qui seront affectés, c'est à dire tout les pions juste après la dernière case vide en partant de la gauche
+            for i in range(const.NB_COLUMNS):
+                if lignePLateau[i] == None:
+                    coupure = i
+            # déplacer les pions juste après la première case vide d'une colonne
+            # pour simuler le déplacement d'un pion, en réalité celui-ci est supprimé et un pion similaire de la même couleur en column-1 est placer
+            for i in range(coupure, const.NB_COLUMNS - 1):
+                lignePLateau[i] = None
+                listePionsPousses.append(lignePLateau[i + 1])
+                placer = placerPionPlateau(plateau, lignePLateau[i + 1], i)
+                # vérifier si le dernier pion n'est pas tombé
+                if placer != ligne:
+                    ligneDernierPion = placer
+                # detruire le pion précédent
+                lignePLateau[i + 1] = None
+            # ajouter le pion à la droite de la ligne que l'on voulait
+            lignePLateau[const.NB_COLUMNS - 1] = pion
+            listePionsPousses.reverse()
+            listePionsPousses.insert(0, pion)
+            # si la liste à une taille de 7, le dernier pion est donc sorti du jeu
+            if len(listePionsPousses) == const.NB_COLUMNS:
+                ligneDernierPion = const.NB_LINES
+        else:
+            placerPionPlateau(plateau, pion, const.NB_COLUMNS - 1)
 
 
-
-
-
+    return (listePionsPousses, ligneDernierPion)
