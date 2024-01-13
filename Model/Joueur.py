@@ -168,5 +168,34 @@ def initialiserIAJoueur(joueur:dict, joueEnPremier:bool)->None:
 
     return None
 
+def getModeEtenduJoueur(joueur:dict)->bool:
+    """
+    Cette fonction nous dit s'il on est en mode étendu ou non
+    :param joueur: le joueur dont on veut savoir s'il est en mode étendu
+    :return: Mode étendu ?
+    """
+    if not type_joueur(joueur):
+        raise TypeError("getModeEtenduJoueur : le paramètre ne correspond pas à un joueur.")
+
+    return const.MODE_ETENDU in joueur
+
+def setModeEtenduJoueur(joueur:dict, avoirCle:bool=True)->None:
+    """
+    Cette fonction ajoute ou supprime l'information de si le joueur est mode étendu ou non
+    :param joueur: le joueur dont on veut régler le mode étendu ou non
+    :param avoirCle: devons nous avoir la clé comme quoi le joueur est en mode étendu?
+    :return: Rien
+    """
+    if not type_joueur(joueur):
+        raise TypeError("setModeEtenduJoueur : le premier paramètre ne correspond pas à un joueur.")
+    if not isinstance(avoirCle, bool):
+        raise TypeError("setModeEtenduJoueur : le second paramètre ne correspond pas à un booléen")
+    if avoirCle:
+        joueur[const.MODE_ETENDU] = True
+    else:
+        if const.MODE_ETENDU in joueur:
+            del joueur[const.MODE_ETENDU]
+    return None
+
 
 
