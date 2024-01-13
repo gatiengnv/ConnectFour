@@ -492,3 +492,24 @@ def encoderPlateau(plateau:list)->str:
             else:
                 chaineEncode += "_"
     return chaineEncode
+
+def isPatPlateau(plateau:list, histo:dict)->bool:
+    """
+    Cette fonction nous dit si le plateau est apparue 5 fois et mets à jour le nombre d'apparition d'un plateau
+    :param plateau: le plateau encodé dont on recherche le nombre d'apparition dans l'histogramme
+    :param histo: l'histogramme du nombre d'apparition des tableaux
+    :return: Est que le tableau est apparu 5 fois ?
+    """
+    if not type_plateau(plateau):
+        raise TypeError("isPatPlateau : Le premier paramètre n’est pas un plateau")
+    if not isinstance(histo, dict):
+        raise TypeError("isPatPlateau : Le second paramètre n’est pas un dictionnaire")
+
+    plateauEncode = encoderPlateau(plateau)
+
+    if plateauEncode in histo:
+        histo[plateauEncode] += 1
+    else:
+        histo[plateauEncode] = 1
+
+    return histo[plateauEncode] == 5
