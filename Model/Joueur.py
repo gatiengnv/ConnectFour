@@ -129,9 +129,9 @@ def setPlacerPionJoueur(joueur:dict, fn:Callable)->None:
 
 def _placerPionJoueur(joueur:dict)->int:
     """
-    Cette fonction choisi une colonne aléatoire
+    Cette fonction choisi un placement aléatoire
     :param joueur: le joueur (IA) qui joue
-    :return: la colonne choisi aléatoirement
+    :return: le placement choisi par l'ordinateur
     """
 
     if not type_joueur(joueur):
