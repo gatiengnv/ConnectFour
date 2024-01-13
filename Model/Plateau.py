@@ -376,6 +376,17 @@ def placerPionLignePlateau(plateau:list, pion:dict, ligne:int, left)->tuple:
     lignePLateau = plateau[ligne]
     listePionsPousses =  []
     ligneDernierPion = None
+
+    #vérifier si la ligne est déjà rempli
+    estRempliLigne = False
+    nbPionsLignes = 0
+    for i in range(const.NB_COLUMNS):
+        if lignePLateau[i] != None:
+            nbPionsLignes+=1
+    if nbPionsLignes == 7:
+        estRempliLigne = True
+
+
     #si le pion est poussé à gauche
     if left:
         #si il n'y a pas de vide en dessous
@@ -388,12 +399,16 @@ def placerPionLignePlateau(plateau:list, pion:dict, ligne:int, left)->tuple:
                     coupure = i
                 i += 1
             # déplacer les pions juste avant la première case vide d'une colonne
-            # pour simuler le déplacement d'un pion, en réalité celui-ci est supprimé et un pion similaire de la même couleur en column+1 est placer
+            # pour simuler le déplacement d'un pion, en réalité celui-ci est supprimé et un pion similaire en column+1 est placer
+            if estRempliLigne:
+                listePionsPousses.append(lignePLateau[const.NB_COLUMNS-1])
             for i in range(coupure - 1, -1, -1):
                 lignePLateau[i + 1] = None
                 listePionsPousses.append(lignePLateau[i])
                 placer = placerPionPlateau(plateau, lignePLateau[i], i + 1)
+
                 # vérifier si le dernier pion n'est pas tombé
+                print(placer, ligne)
                 if placer != ligne:
                     ligneDernierPion = placer
 
@@ -403,16 +418,21 @@ def placerPionLignePlateau(plateau:list, pion:dict, ligne:int, left)->tuple:
             lignePLateau[0] = pion
             listePionsPousses.reverse()
             listePionsPousses.insert(0, pion)
-            # si la liste à une taille de 7, le dernier pion est donc sorti du jeu
-            if len(listePionsPousses) == const.NB_COLUMNS:
+            # si la liste à une taille de 8, le dernier pion est donc sorti du jeu
+            print(len(listePionsPousses))
+            if len(listePionsPousses) == const.NB_COLUMNS+1:
                 ligneDernierPion = const.NB_LINES
+        # si il y a du vide en dessous
         else:
-            placerPionPlateau(plateau, pion, 0)
+            placer = placerPionPlateau(plateau, pion, 0)
+            print("pas de pion en dessous")
+            listePionsPousses.append(pion)
+            ligneDernierPion = placer
 
 
     else:
         #vérifier si il n'y a pas de vide en dessous
-        if ligne == const.NB_LINES - 1 or plateau[ligne+1][const.NB_LINES - 1] != None:
+        if ligne == const.NB_LINES - 1 or plateau[ligne+1][const.NB_COLUMNS - 1] != None:
             # si le pion est poussé à droite
             coupure = 0
             # déterminer les pions qui seront affectés, c'est à dire tout les pions juste après la dernière case vide en partant de la gauche
@@ -421,6 +441,8 @@ def placerPionLignePlateau(plateau:list, pion:dict, ligne:int, left)->tuple:
                     coupure = i
             # déplacer les pions juste après la première case vide d'une colonne
             # pour simuler le déplacement d'un pion, en réalité celui-ci est supprimé et un pion similaire de la même couleur en column-1 est placer
+            if estRempliLigne:
+                listePionsPousses.append(lignePLateau[0])
             for i in range(coupure, const.NB_COLUMNS - 1):
                 lignePLateau[i] = None
                 listePionsPousses.append(lignePLateau[i + 1])
@@ -434,11 +456,16 @@ def placerPionLignePlateau(plateau:list, pion:dict, ligne:int, left)->tuple:
             lignePLateau[const.NB_COLUMNS - 1] = pion
             listePionsPousses.reverse()
             listePionsPousses.insert(0, pion)
-            # si la liste à une taille de 7, le dernier pion est donc sorti du jeu
-            if len(listePionsPousses) == const.NB_COLUMNS:
+            # si la liste à une taille de 8, le dernier pion est donc sorti du jeu
+            print(len(listePionsPousses))
+            if len(listePionsPousses) == const.NB_COLUMNS+1:
                 ligneDernierPion = const.NB_LINES
+        #si il y a du vide en dessous
         else:
-            placerPionPlateau(plateau, pion, const.NB_COLUMNS - 1)
+            placer = placerPionPlateau(plateau, pion, const.NB_COLUMNS - 1)
+            print("pas de pion en dessous")
+            listePionsPousses.append(pion)
+            ligneDernierPion = placer
 
 
     return (listePionsPousses, ligneDernierPion)
