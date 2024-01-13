@@ -133,25 +133,49 @@ def _placerPionJoueur(joueur:dict)->int:
     :param joueur: le joueur (IA) qui joue
     :return: la colonne choisi aléatoirement
     """
+
     if not type_joueur(joueur):
         raise TypeError("_placerPionJoueur : Le paramètre n’est pas un joueur")
 
-    if not isRempliPlateau(joueur[const.PLATEAU]):
+    #si mode étendu
+    if getModeEtenduJoueur(joueur):
         placer = False
-        nbPionsColonne = 0
+        nbPions = 0
         while not placer:
-            colonneChoisi = randint(0, const.NB_COLUMNS - 1)
+            placement = randint(-const.NB_LINES, const.NB_COLUMNS + const.NB_LINES - 1)
             # vérifier si le nombre de pions dans une colonne est bien inférieur ou égal au nombre de ligne
-            for i in range(const.NB_LINES):
-                if joueur[const.PLATEAU][i][colonneChoisi] != None:
-                    print(joueur[const.PLATEAU][i][colonneChoisi])
-                    nbPionsColonne += 1
-            if nbPionsColonne <= const.NB_LINES - 1:
+            #si l'odinateur choisi une colonne
+            if placement >= 0 and placement <= const.NB_COLUMNS - 1:
+                for i in range(const.NB_LINES):
+                    if joueur[const.PLATEAU][i][placement] != None:
+                        nbPions += 1
+                if nbPions <= const.NB_LINES - 1:
+                        placer = True
+                nbPions = 0
+            #si l'ordinateur choisi une ligne
+            else:
                 placer = True
-            nbPionsColonne = 0
+
+    #si pas en mode étendu
     else:
-        colonneChoisi = -1
-    return colonneChoisi
+
+        if not isRempliPlateau(joueur[const.PLATEAU]):
+            placer = False
+            nbPionsColonne = 0
+            while not placer:
+                placement = randint(0, const.NB_COLUMNS - 1)
+                # vérifier si le nombre de pions dans une colonne est bien inférieur ou égal au nombre de ligne
+                for i in range(const.NB_LINES):
+                    if joueur[const.PLATEAU][i][placement] != None:
+                        nbPionsColonne += 1
+                if nbPionsColonne <= const.NB_LINES - 1:
+                    placer = True
+                nbPionsColonne = 0
+        else:
+            placement = -1
+
+    return placement
+
 
 def initialiserIAJoueur(joueur:dict, joueEnPremier:bool)->None:
     """
