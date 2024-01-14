@@ -77,10 +77,10 @@ class Board():
 
     def is_valid_move(self, num_col: int) -> bool:
         """
-        Fonction qui renvoie un booléen indiquant si un mouvement est valide ou non
+        Function that return a boolean that indicate if a move is valid or not
 
-        :param num_col : le numéro de colonne où le pion sera ajouté
-        :return: un booléen
+        :param num_col: the column number where the pion will be added
+        :return: a boolean
 
         """
 
@@ -88,11 +88,12 @@ class Board():
 
     def placerPion(self, couleur, num_col) -> None:
         """
-        Fonction qui permet à l'ordinateur de jouer un pion
+        Function that let the computer play a pion
 
-        :param couleur: couleur du pion
-        :param num_col : le numéro de colonne où le pion sera ajouté
-        :retour: Rien
+        :param couleur: color of the pion
+        :param num_col: the column number where the pion will be added
+        :raise ValueError: if the move is not valid
+        :return: None
         """
 
         if not self.is_valid_move(num_col):
@@ -103,16 +104,16 @@ class Board():
 
     def getPlateau(self) -> list:
         """
-        Fonction qui renvoie le plateau actuel
-        :return: liste représentant le plateau
+        Function that returns the current board
+        :return: list representing the current board
         """
 
         return self.plateau
 
     def copy(self):
         """
-        Fonction qui copie la carte actuelle
-        :return: une nouvelle instance de la classe avec le même tableau
+        Function that copy the current board
+        :return: a new instance of the class with the same board
         """
 
         return Board(copy.deepcopy(self.plateau))
@@ -123,8 +124,8 @@ class Board():
 
     def get_valid_locations(self) -> int:
         """
-        Fonction qui récupère toutes les colonnes valides
-        :return: une liste d'entier
+        Function that get all valid columns
+        :return: a list of int
         """
 
         valid_locations = []
@@ -314,5 +315,6 @@ def generation_coups(mode: bool, plateau: list) -> int:
 if __name__ == '__main__':
     board = Board(construirePlateau())
     model = AI([1, 0])
-    print(model.minimax(board, 1, -math.inf, math.inf, True))
+    depth = 10 #paramétrer le niveau l'IA ici
+    model.minimax(board, depth, -math.inf, math.inf, True)
 
